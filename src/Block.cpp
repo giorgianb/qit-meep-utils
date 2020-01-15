@@ -1,6 +1,6 @@
 #include "Block.hpp"
 
-using namespace meep_utils;
+using namespace qit_meep_utils;
 
 Block::Block(const meep::vec& s, const meep::vec& c, const double e):
     sides {s},

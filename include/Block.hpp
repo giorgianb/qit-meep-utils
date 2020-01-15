@@ -1,6 +1,6 @@
 #include <meep.hpp>
 
-namespace meep_utils {
+namespace qit_meep_utils {
     class Block {
         private:
             meep::vec sides;
