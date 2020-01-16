@@ -15,5 +15,9 @@ with h5py.File(sys.argv[1], 'r') as f:
     s = mlab.contour3d(data, colormap="YlGnBu")
     mlab.show()
 
+
+    s = mlab.volume_slice(data, colormap="YlGnBu")
+    mlab.show()
+
    
 

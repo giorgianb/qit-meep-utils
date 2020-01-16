@@ -3,11 +3,10 @@
 namespace qit_meep_utils {
     class Block {
         private:
-            meep::vec sides;
-            meep::vec center;
+            meep::volume volume;
             double eps;
         public:
-            Block(const meep::vec& sides, const meep::vec& center, const double epsilon);
+            Block(const meep::vec& center, const meep::vec& sides, const double epsilon);
             double epsilon(void) const;
             bool contains(const meep::vec& p) const;
     };
