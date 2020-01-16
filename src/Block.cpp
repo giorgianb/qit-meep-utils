@@ -2,15 +2,29 @@
 
 using namespace qit_meep_utils;
 
-Block::Block(const meep::vec& c, const meep::vec& s, const double e):
-    volume {c - s / 2, c + s / 2},
-    eps {e} {
+Block::Block(const meep::volume& volume, const double epsilon):
+    _volume {volume},
+    _epsilon {epsilon} {
+}
+
+meep::volume Block::volume(void) const {
+    return _volume;
 }
 
 double Block::epsilon(void) const {
-    return eps;
+    return _epsilon;
 }
 
 bool Block::contains(const meep::vec& p) const {
-    return volume.contains(p);
+    return _volume.contains(p);
 }
+
+Block Block::construct(
+        const meep::vec& center, 
+        const meep::vec& sides, 
+        const double epsilon
+        ) {
+    return Block {{center - sides / 2, center + sides / 2}, epsilon};
+}
+
+
