@@ -4,24 +4,33 @@
 namespace qit_meep_utils {
     class GaussianBeam {
         private:
-            meep::volume v;
-            meep::src_time s;
-            meep::component c;
-            meep::vec pos; // origin
-            meep::vec k; // direction of propogation
-            double source_radius;
-            double sigma;
-            std::complex<double> amp;
+            meep::volume _volume;
+            meep::src_time _source;
+            meep::vec _position; 
+            double _radius;
+            meep::vec _k; // direction of propogation
+            double _sigma;
+            meep::component _component;
+            std::complex<double> _amplitude;
         public:
             GaussianBeam(
                     const meep::src_time& source,
-                    const meep::component& component,
                     const meep::vec& position, 
-                    const double source_radius,
-                    const meep::vec& dir, 
+                    const double radius,
+                    const meep::vec& k, 
                     const double sigma,
-                    const std::complex<double> amp
+                    const meep::component& component,
+                    const std::complex<double>& amplitude
                     );
+
+            meep::src_time source(void) const;
+            meep::vec position(void) const;
+            constexpr double radius(void) const;
+            meep::vec k(void) const;
+            constexpr double sigma(void) const;
+            constexpr meep::component component(void) const;
+            constexpr std::complex<double> amplitude(void) const;
+
             void add_to_fields(meep::fields& f) const;
     };
 }

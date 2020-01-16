@@ -6,50 +6,69 @@ constexpr double pi {4 * std::atan(1)};
 
 GaussianBeam::GaussianBeam(
         const meep::src_time& source,
-        const meep::component& comp,
-        const meep::vec& p,
-        const double sr,
-        const meep::vec& d,
-        const double sig,
-        const std::complex<double> a
+        const meep::vec& position, 
+        const double radius,
+        const meep::vec& k, 
+        const double sigma,
+        const meep::component& component,
+        const std::complex<double>& amplitude
         ):
-    v {p - meep::vec(sr, sr, sr) * 2.0, p + meep::vec(sr, sr, sr) * 2.0},
-    s {source},
-    c {comp},
-    pos {p},
-    k {d},
-    sigma {sig},
-    amp {a} {
+    _volume {
+        position - meep::vec(radius, radius, radius) * 2.0, 
+        position + meep::vec(radius, radius, radius) * 2.0
+    },
+    _source {source},
+    _position {position},
+    _radius {radius},
+    _k {k},
+    _sigma {sigma},
+    _component {component},
+    _amplitude {amplitude} {
 }
 
-//void fields::add_volume_source(component c, const src_time &src, const volume &where_,
-//                                complex<double> A(const vec &), complex<double> amp) {
+meep::src_time GaussianBeam::source(void) const {
+    return _source;
+}
 
-static thread_local meep::vec g_pos;
-static thread_local meep::vec g_k;
-static thread_local double g_source_radius;
-static thread_local double g_sigma;
+meep::vec GaussianBeam::position(void) const {
+    return _position;
+}
 
-std::complex<double> amp_func(const meep::vec& p);
+constexpr double GaussianBeam::radius(void) const {
+    return _radius;
+}
 
+meep::vec GaussianBeam::k(void) const {
+    return _k;
+}
+
+constexpr double GaussianBeam::sigma(void) const {
+    return _sigma;
+}
+
+constexpr meep::component GaussianBeam::component(void) const {
+    return _component;
+}
+
+constexpr std::complex<double> GaussianBeam::amplitude(void) const {
+    return _amplitude;
+}
+
+static thread_local const GaussianBeam* beam;
+std::complex<double> amplitude_function(const meep::vec& p);
 
 void GaussianBeam::add_to_fields(meep::fields& f) const {
-    g_pos = this->pos;
-    g_k = this->k;
-    g_source_radius = this->source_radius;
-    g_sigma = this->sigma;
+    beam = this;
 
-    f.add_volume_source(c, s, v, amp_func, amp);
+    f.add_volume_source(_component, _source, _volume, amplitude_function, _amplitude);
 }
 
-std::complex<double> amp_func(const meep::vec& p) {
+std::complex<double> amplitude_function(const meep::vec& p) {
     using namespace std::complex_literals;
 
-    const meep::vec& d {p - g_pos};
-    if ((d & d) > g_source_radius * g_source_radius)
+    const meep::vec& d {p - beam->position()};
+    if ((d & d) > beam->radius() * beam->radius())
         return 0.0i;
 
-    return std::exp(2.0i * pi * (g_k & d) - (d & d)/(2*g_sigma * g_sigma));
+    return std::exp(2.0i * pi * (beam->k() & d) - (d & d)/(2 * beam->sigma() * beam->sigma()));
 }
-
-
