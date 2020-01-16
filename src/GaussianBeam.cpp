@@ -34,24 +34,8 @@ meep::vec GaussianBeam::position(void) const {
     return _position;
 }
 
-constexpr double GaussianBeam::radius(void) const {
-    return _radius;
-}
-
 meep::vec GaussianBeam::k(void) const {
     return _k;
-}
-
-constexpr double GaussianBeam::sigma(void) const {
-    return _sigma;
-}
-
-constexpr meep::component GaussianBeam::component(void) const {
-    return _component;
-}
-
-constexpr std::complex<double> GaussianBeam::amplitude(void) const {
-    return _amplitude;
 }
 
 static thread_local const GaussianBeam* beam;

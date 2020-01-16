@@ -11,10 +11,6 @@ meep::volume Block::volume(void) const {
     return _volume;
 }
 
-double Block::epsilon(void) const {
-    return _epsilon;
-}
-
 bool Block::contains(const meep::vec& p) const {
     return _volume.contains(p);
 }

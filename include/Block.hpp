@@ -1,3 +1,5 @@
+#ifndef QIT_MEEP_UTILS_BLOCK_INCLUDE
+#define QIT_MEEP_UTILS_BLOCK_INCLUDE
 #include <meep.hpp>
 
 namespace qit_meep_utils {
@@ -9,7 +11,7 @@ namespace qit_meep_utils {
             Block(const meep::volume& volume, const double epsilon);
 
             meep::volume volume(void) const;
-            double epsilon(void) const;
+            constexpr double epsilon(void) const;
 
             bool contains(const meep::vec& p) const;
 
@@ -19,4 +21,10 @@ namespace qit_meep_utils {
                     const double epsilon
                     );
     };
+
+    constexpr double Block::epsilon(void) const {
+        return _epsilon;
+    }
 }
+#endif
+

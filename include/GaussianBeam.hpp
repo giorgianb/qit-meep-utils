@@ -1,3 +1,5 @@
+#ifndef QIT_MEEP_UTILS_GAUSSIAN_BEAM_INCLUDE
+#define QIT_MEEP_UTILS_GAUSSIAN_BEAM_INCLUDE
 #include <meep.hpp>
 #include <complex>
 
@@ -33,4 +35,22 @@ namespace qit_meep_utils {
 
             void add_to_fields(meep::fields& f) const;
     };
+
+    constexpr double GaussianBeam::radius(void) const {
+        return _radius;
+    }
+
+    constexpr double GaussianBeam::sigma(void) const {
+        return _sigma;
+    }
+
+    constexpr meep::component GaussianBeam::component(void) const {
+        return _component;
+    }
+
+    constexpr std::complex<double> GaussianBeam::amplitude(void) const {
+        return _amplitude;
+    }
 }
+#endif
+
